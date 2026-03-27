@@ -87,11 +87,11 @@ const CircularBoard: React.FC = () => {
 
       {/* Zone labels */}
       <text x={CX} y={CY + OUTER_R + 26} textAnchor="middle" fill="#60A5FA" fontSize="12" fontWeight="bold" letterSpacing="2">
-        ENTRY ZONE
+        ON
       </text>
       <text x={CX - OUTER_R - 26} y={CY} textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="bold" letterSpacing="2"
         transform={`rotate(-90, ${CX - OUTER_R - 26}, ${CY})`}>
-        EXIT ZONE
+        OFF
       </text>
 
       {/* Space wedges */}
