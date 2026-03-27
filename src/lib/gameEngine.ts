@@ -100,22 +100,15 @@ export function getValidMoves(
       }
       
       // CORRECT BEARING OFF LOGIC
-      // You can ONLY bear off if you roll EXACTLY the number the piece is on
+      // You can ONLY bear off if you roll EXACTLY the number the piece is on (position 1-6)
+      // No exact match = no valid move (just can't use that die)
       if (from >= 18 && allInExitCourt(state, player)) {
         const pos = exitPosition(from); // Position 1-6
         // Exact match = bear off
         if (die === pos && !validDestinations.includes(-1)) {
           validDestinations.push(-1); // Bear off
         }
-        // If no exact match, allow moving backward (from - die) if >= 18
-        else if (die < pos) {
-          const backMove = from - die;
-          if (backMove >= 18 && !isBlocked(state, backMove, player)) {
-            if (!validDestinations.includes(backMove)) {
-              validDestinations.push(backMove);
-            }
-          }
-        }
+        // NO exact match = no valid move possible from this position with this die
       }
     }
   }
