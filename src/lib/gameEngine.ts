@@ -315,9 +315,30 @@ export function processDiceRoll(state: GameState, dice: [number, number]): GameS
   newState.phase = 'moving';
 
   if (isDoubles(dice)) {
-    newState.remainingMoves = [dice[0], dice[0], dice[0], dice[0]];
-    newState.doublesPhase = 'first';
-    newState.message = `Doubles ${dice[0]}s! Move 4 × ${dice[0]}, then 4 × ${getComplement(dice[0])}, then roll again!`;
+    const dieValue = dice[0];
+    const possibleMoves = countValidMoves(newState, newState.currentPlayer, [dieValue]);
+    
+    // In bearing-off zone: allow partial (rule breaks)
+    if (allInExitCourt(newState, newState.currentPlayer)) {
+      newState.remainingMoves = [dieValue, dieValue, dieValue, dieValue];
+      newState.doublesPhase = 'first';
+      newState.message = `Doubles ${dieValue}s in end zone! Move as many as possible.`;
+    } else {
+      // Outside bearing-off zone: must be able to use ALL 4 doubles
+      if (possibleMoves >= 4) {
+        newState.remainingMoves = [dieValue, dieValue, dieValue, dieValue];
+        newState.doublesPhase = 'first';
+        newState.message = `Doubles ${dieValue}s! Move 4 × ${dieValue}, then 4 × ${getComplement(dieValue)}, then roll again!`;
+      } else {
+        // Can't use all 4 - turn ends immediately
+        newState.remainingMoves = [];
+        newState.doublesPhase = null;
+        newState.message = `Can't make all 4 doubles ${dieValue}s! Turn passes.`;
+        endTurn(newState);
+        newState.phase = 'rolling';
+        return newState;
+      }
+    }
   } else {
     newState.remainingMoves = [dice[0], dice[1]];
     newState.doublesPhase = null;
@@ -380,4 +401,24 @@ export function getDieForMove(from: number | 'well' | 'pit', to: number | 'off')
     return exitPosition(from as number);
   }
   return (to as number) - (from as number);
+}
+
+// Count how many valid moves are possible with the dice
+export function countValidMoves(state: GameState, player: Player, moves: number[]): number {
+  let count = 0;
+  // Must move from pit first
+  if (state.pit[player] > 0) {
+    count += getValidMoves(state, 'pit', player, moves).length;
+  }
+  // Check well
+  if (state.well[player] > 0) {
+    count += getValidMoves(state, 'well', player, moves).length;
+  }
+  // Check each board space
+  for (let i = 0; i < TOTAL_SPACES; i++) {
+    if (state.board[i][player] > 0) {
+      count += getValidMoves(state, i, player, moves).length;
+    }
+  }
+  return count;
 }
