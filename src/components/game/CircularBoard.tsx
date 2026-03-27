@@ -295,14 +295,14 @@ const CircularBoard: React.FC = () => {
           <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" />
         )}
       </circle>
+      {/* ON label next to space 1 */}
+      <text x={400} y={750} textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" stroke="black" strokeWidth="0.5">ON</text>
+      {/* OFF label next to space 19 */}
+      <text x={130} y={200} textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" stroke="black" strokeWidth="0.5">OFF</text>
     </svg>
   );
 };
 
 export default CircularBoard;
 
-      {/* ON label next to space 1 */}
-      <text x={420} y={720} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">ON</text>
-      
-      {/* OFF label next to space 19 */}
       <text x={130} y={250} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">OFF</text>
