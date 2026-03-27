@@ -315,5 +315,3 @@ const CircularBoard: React.FC = () => {
 };
 
 export default CircularBoard;
-
-      <text x={130} y={250} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">OFF</text>
