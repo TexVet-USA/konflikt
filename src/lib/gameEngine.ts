@@ -100,20 +100,20 @@ export function getValidMoves(
       }
       
       // BEARING OFF LOGIC
-      // Roll exact number = bear off
-      // Roll higher = move DOWN to lower position
-      // Roll lower = move DOWN to lower position
+      // Each die is checked independently
+      // Exact match (die === position) = bear off
+      // die < position = move DOWN
+      // die > position = NO valid move (can't use that die)
       if (from >= 18 && allInExitCourt(state, player)) {
         const pos = exitPosition(from); // Position 1-6
         // Exact match = bear off
         if (die === pos && !validDestinations.includes(-1)) {
           validDestinations.push(-1); // Bear off
         }
-        // Can always move DOWN to lower position (even if roll is higher than position)
-        else {
+        // die < position = can move DOWN
+        else if (die < pos) {
           const newPos = pos - die;
           if (newPos >= 1) {
-            // Convert back to space index for valid move check
             const newSpaceIndex = newPos + 17;
             if (!isBlocked(state, newSpaceIndex, player)) {
               if (!validDestinations.includes(newSpaceIndex)) {
@@ -122,6 +122,7 @@ export function getValidMoves(
             }
           }
         }
+        // die > position = NO valid move (can't bear off, can't move backward)
       }
     }
   }
