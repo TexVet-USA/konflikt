@@ -192,7 +192,7 @@ const CircularBoard: React.FC = () => {
               <text
                 x={p.x} y={p.y}
                 textAnchor="middle" dominantBaseline="central"
-                fill="white" fontSize="11" fontWeight="bold"
+                fill="#000000" fontSize="11" fontWeight="bold"
               >
                 {c.count > 1 ? c.count : ''}
               </text>
@@ -241,7 +241,7 @@ const CircularBoard: React.FC = () => {
               strokeWidth={isSel ? 3 : 2}
               filter="url(#ps)" />
             <circle cx={CX - 28} cy={CY + 5} r={12} fill="none" stroke={PLAYER_COLORS.white.light} strokeWidth="0.8" opacity="0.3" />
-            <text x={CX - 28} y={CY + 5} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="13" fontWeight="bold" className="pointer-events-none">
+            <text x={CX - 28} y={CY + 5} textAnchor="middle" dominantBaseline="central" fill="#000000" fontSize="13" fontWeight="bold" className="pointer-events-none">
               {state.pit.white}
             </text>
           </g>
@@ -259,7 +259,7 @@ const CircularBoard: React.FC = () => {
               strokeWidth={isSel ? 3 : 2}
               filter="url(#ps)" />
             <circle cx={CX + 28} cy={CY + 5} r={12} fill="none" stroke={PLAYER_COLORS.black.light} strokeWidth="0.8" opacity="0.3" />
-            <text x={CX + 28} y={CY + 5} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="13" fontWeight="bold" className="pointer-events-none">
+            <text x={CX + 28} y={CY + 5} textAnchor="middle" dominantBaseline="central" fill="#000000" fontSize="13" fontWeight="bold" className="pointer-events-none">
               {state.pit.black}
             </text>
           </g>
@@ -300,3 +300,9 @@ const CircularBoard: React.FC = () => {
 };
 
 export default CircularBoard;
+
+      {/* ON label next to space 1 */}
+      <text x={420} y={720} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">ON</text>
+      
+      {/* OFF label next to space 19 */}
+      <text x={130} y={250} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">OFF</text>
