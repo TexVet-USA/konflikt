@@ -99,22 +99,22 @@ export function getValidMoves(
         }
       }
       
-      // Also check bearing off if all in exit court
-      if (destIndex >= TOTAL_SPACES && allInExitCourt(state, player)) {
-        const pos = exitPosition(from);
-        if (die === pos) {
-          if (!validDestinations.includes(-1)) {
-            validDestinations.push(-1); // -1 = bear off
-          }
-        }
-      }
-      
-      // Allow bearing off from exit court even when dest is on board
-      // (piece on space 19 with die=1 can bear off OR move to space 20)
+      // CORRECT BEARING OFF LOGIC
+      // You can ONLY bear off if you roll EXACTLY the number the piece is on
       if (from >= 18 && allInExitCourt(state, player)) {
-        const pos = exitPosition(from);
+        const pos = exitPosition(from); // Position 1-6
+        // Exact match = bear off
         if (die === pos && !validDestinations.includes(-1)) {
-          validDestinations.push(-1);
+          validDestinations.push(-1); // Bear off
+        }
+        // If no exact match, allow moving backward (from - die) if >= 18
+        else if (die < pos) {
+          const backMove = from - die;
+          if (backMove >= 18 && !isBlocked(state, backMove, player)) {
+            if (!validDestinations.includes(backMove)) {
+              validDestinations.push(backMove);
+            }
+          }
         }
       }
     }
