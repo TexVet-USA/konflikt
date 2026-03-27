@@ -64,8 +64,9 @@ export function wouldHit(state: GameState, spaceIndex: number, player: Player): 
 
 // Get the exit court position (1-6) for a space index (18-23)
 export function exitPosition(spaceIndex: number): number {
-  // REVERSED: space 24 → position 1, space 19 → position 6
-  return 25 - spaceIndex;
+  // Space 19 = position 1, Space 24 = position 6
+  // Position = spaceIndex - 18
+  return spaceIndex - 18;
 }
 
 // Get valid destinations for a piece at a given location
