@@ -154,6 +154,17 @@ const CircularBoard: React.FC = () => {
         );
       })}
 
+      {/* ON/OFF zone labels */}
+      {spaceData.map((s) => {
+        const label = s.isEntry ? "ON" : (s.isExit ? "OFF" : null);
+        if (!label) return null;
+        const lp = polar(CX, CY, (INNER_R + OUTER_R) / 2, s.mid);
+        return (
+          <text key={label + "-" + s.index} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill="#FFFFFF" fontSize="8" fontWeight="bold" className="pointer-events-none">
+            {label}
+          </text>
+        );
+      })}
       {/* Pieces on board */}
       {spaceData.map((s) => {
         const pieces: React.ReactNode[] = [];
