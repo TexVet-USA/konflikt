@@ -64,7 +64,8 @@ export function wouldHit(state: GameState, spaceIndex: number, player: Player): 
 
 // Get the exit court position (1-6) for a space index (18-23)
 export function exitPosition(spaceIndex: number): number {
-  return spaceIndex - 17; // index 18 → position 1, index 23 → position 6
+  // REVERSED: space 24 → position 1, space 19 → position 6
+  return 25 - spaceIndex;
 }
 
 // Get valid destinations for a piece at a given location
@@ -99,19 +100,18 @@ export function getValidMoves(
         }
       }
       
-      // BEARING OFF LOGIC
-      // Each die is checked independently
-      // Exact match (die === position) = bear off
-      // die < position = move DOWN
-      // die > position = NO valid move (can't use that die)
+      // BEARING OFF LOGIC (last quadrant)
+      // die === position: can bear off OR move down (player's choice)
+      // die < position: can only move down
+      // die > position: no valid move
       if (from >= 18 && allInExitCourt(state, player)) {
         const pos = exitPosition(from); // Position 1-6
-        // Exact match = bear off
+        // Exact match: bear off
         if (die === pos && !validDestinations.includes(-1)) {
           validDestinations.push(-1); // Bear off
         }
-        // die < position = can move DOWN
-        else if (die < pos) {
+        // die < position: move down (only option)
+        if (die < pos) {
           const newPos = pos - die;
           if (newPos >= 1) {
             const newSpaceIndex = newPos + 17;
@@ -122,7 +122,7 @@ export function getValidMoves(
             }
           }
         }
-        // die > position = NO valid move (can't bear off, can't move backward)
+        // die > position: NO move (can't bear off or move backward)
       }
     }
   }
