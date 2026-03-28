@@ -6,7 +6,7 @@ interface GameHeaderProps {
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ onOpenRules }) => {
-  const { state, newGame, gameMode, aiDifficulty, aiThinking } = useGame();
+  const { state, newGame, gameMode, aiDifficulty, aiThinking, skipTurn, turnMoves, remainingMoves } = useGame();
 
   return (
     <header className="w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50">

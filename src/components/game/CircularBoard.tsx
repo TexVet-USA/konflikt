@@ -203,7 +203,7 @@ const CircularBoard: React.FC = () => {
               <text
                 x={p.x} y={p.y}
                 textAnchor="middle" dominantBaseline="central"
-                fill="#000000" fontSize="11" fontWeight="bold"
+                fill="#000000" fontSize="16" fontWeight="bold"
               >
                 {c.count}
               </text>
