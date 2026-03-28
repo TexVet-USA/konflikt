@@ -66,7 +66,7 @@ export function wouldHit(state: GameState, spaceIndex: number, player: Player): 
 export function exitPosition(spaceIndex: number): number {
   // CORRECT: Space 24 (closest to off) needs 1, Space 19 (farthest) needs 6
   // Formula: 25 - spaceIndex
-  return spaceIndex - 18;
+  return 25 - spaceIndex;
 }
 
 // Get valid destinations for a piece at a given location
