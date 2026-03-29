@@ -236,74 +236,49 @@ export function executeMove(
     return newState;
   }
 
-  // Check if more moves available
-  if (newState.remainingMoves.length === 0 || !hasAnyValidMove(newState, player, newState.remainingMoves)) {
-    // CRITICAL: No valid moves with remaining dice - auto-pass turn
-    if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
+  // Handle doubles phases FIRST - before checking valid moves
+  if (newState.doublesPhase === 'first' && isDoubles(newState.dice.values)) {
+    const dieValue = newState.dice.values[0];
+    const firstDoublesUsed = newState.turnMoves.filter(m => m.dieUsed === dieValue).length;
+    
+    if (firstDoublesUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
+      // All 4 first doubles used → go to complement
+      const comp = getComplement(dieValue);
+      newState.remainingMoves = [comp, comp, comp, comp];
+      newState.doublesPhase = 'complement';
+      newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
+      return newState;
+    } else if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
+      // No valid moves and can't use all 4 → lose everything
       newState.remainingMoves = [];
       newState.doublesPhase = null;
       endTurn(newState);
       return newState;
     }
+  } else if (newState.doublesPhase === 'complement') {
+    const dieValue = newState.dice.values[0];
+    const comp = getComplement(dieValue);
+    const compUsed = newState.turnMoves.filter(m => m.dieUsed === comp).length;
     
-    // Handle doubles phases
-    if (newState.doublesPhase === 'first' && isDoubles(newState.dice.values)) {
-      // Check if all 4 first doubles were used
-      const dieValue = newState.dice.values[0];
-      const firstDoublesUsed = newState.turnMoves.filter(
-        m => m.dieUsed === dieValue
-      ).length;
-      
-      if (firstDoublesUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
-        // Move to complement phase
-        const comp = getComplement(dieValue);
-        newState.remainingMoves = [comp, comp, comp, comp];
-        newState.doublesPhase = 'complement';
-        newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
-        
-        if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
-          // Can't use complement, lose it and re-roll
-          newState.remainingMoves = [];
-          newState.doublesPhase = null;
-          endTurn(newState);
-        }
-        return newState;
-      } else {
-        // Can't use all 4 first doubles - check if can use complement anyway
-        const comp = getComplement(dieValue);
-        newState.remainingMoves = [comp, comp, comp, comp];
-        newState.doublesPhase = 'complement';
-        newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
-        
-        if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
-          // Can't use complement, lose re-roll
-          newState.remainingMoves = [];
-          newState.doublesPhase = null;
-          endTurn(newState);
-        }
-        return newState;
-      }
-    } else if (newState.doublesPhase === 'complement') {
-      const comp = getComplement(dieValue);
-      const compUsed = newState.turnMoves.filter(m => m.dieUsed === comp).length;
-      
-      if (compUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
-        // Get re-roll
-        newState.doublesPhase = 'reroll';
-        newState.phase = 'rolling';
-        newState.message = `All complement moves used! Roll again!`;
-        return newState;
-      } else {
-        // Couldn't use all complement - lose re-roll
-        newState.doublesPhase = null;
-        endTurn(newState);
-        return newState;
-      }
-    } else {
-      // Normal end of turn
+    if (compUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
+      // All complement used → get reroll
+      newState.doublesPhase = 'reroll';
+      newState.phase = 'rolling';
+      newState.message = `All complement moves used! Roll again!`;
+      return newState;
+    } else if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
+      // Can't use complement → lose re-roll
       newState.doublesPhase = null;
       endTurn(newState);
+      return newState;
     }
+  }
+
+  // Check if more moves available (non-doubles path)
+  if (newState.remainingMoves.length === 0 || !hasAnyValidMove(newState, player, newState.remainingMoves)) {
+    newState.doublesPhase = null;
+    endTurn(newState);
+    return newState;
   }
 
   return newState;
