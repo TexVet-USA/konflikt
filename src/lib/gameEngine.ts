@@ -424,3 +424,15 @@ export function countValidMoves(state: GameState, player: Player, moves: number[
   }
   return count;
 }
+
+export function forceEndTurn(state: GameState): GameState {
+  const newState = { ...state };
+  const opponent = state.currentPlayer === "white" ? "blue" : "white";
+  newState.currentPlayer = opponent;
+  newState.phase = "rolling";
+  newState.remainingMoves = [];
+  newState.doublesPhase = null;
+  newState.message = "No valid moves - turn passes.";
+  newState.aiThinking = false;
+  return newState;
+}
