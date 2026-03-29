@@ -86,10 +86,10 @@ const CircularBoard: React.FC = () => {
       <circle cx={CX} cy={CY} r={OUTER_R} fill="none" stroke="#334155" strokeWidth="1.5" />
 
       {/* Zone labels */}
-      <text x={CX} y={CY + OUTER_R + 26} textAnchor="middle" fill="#60A5FA" fontSize="12" fontWeight="bold" letterSpacing="2">
+      <text x={CX} y={CY + OUTER_R + 26} textAnchor="middle" fill="#60A5FA" fontSize="18" fontWeight="bold" letterSpacing="2">
         ON
       </text>
-      <text x={CX - OUTER_R - 26} y={CY} textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="bold" letterSpacing="2"
+      <text x={CX - OUTER_R - 26} y={CY} textAnchor="middle" fill="#FBBF24" fontSize="18" fontWeight="bold" letterSpacing="2"
         transform={`rotate(-90, ${CX - OUTER_R - 26}, ${CY})`}>
         OFF
       </text>
@@ -146,7 +146,7 @@ const CircularBoard: React.FC = () => {
             x={lp.x} y={lp.y}
             textAnchor="middle" dominantBaseline="central"
             fill={s.isEntry ? '#FFFFFF' : s.isExit ? '#FFFFFF' : '#FFFFFF'}
-            fontSize="9" fontWeight="700"
+            fontSize="14" fontWeight="700"
             className="pointer-events-none"
           >
             {s.index + 1}
@@ -160,7 +160,7 @@ const CircularBoard: React.FC = () => {
         if (!label) return null;
         const lp = polar(CX, CY, (INNER_R + OUTER_R) / 2, s.mid);
         return (
-          <text key={label + "-" + s.index} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill="#FFFFFF" fontSize="8" fontWeight="bold" className="pointer-events-none">
+          <text key={label + "-" + s.index} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill="#FFFFFF" fontSize="12" fontWeight="bold" className="pointer-events-none">
             {label}
           </text>
         );

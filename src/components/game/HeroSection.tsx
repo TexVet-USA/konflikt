@@ -158,6 +158,15 @@ const HeroSection: React.FC = () => {
           "Ya Neva' Give Up!"
         </p>
 
+        <div className="mt-4 flex flex-col gap-2 text-center">
+          <a href="https://konfliktgame.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 text-sm font-medium underline">
+            konfliktgame.com
+          </a>
+          <a href="https://konfliktgame.com/konflikt-diy" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 text-sm font-medium underline">
+            Build your own board - DIY
+          </a>
+        </div>
+
         {/* Feature cards */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
           <div className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
