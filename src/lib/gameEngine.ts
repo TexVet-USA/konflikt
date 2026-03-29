@@ -247,15 +247,16 @@ export function executeMove(
     }
     
     // Handle doubles phases
-    if (newState.doublesPhase === 'first' && isDoubles(state.dice.values)) {
+    if (newState.doublesPhase === 'first' && isDoubles(newState.dice.values)) {
       // Check if all 4 first doubles were used
+      const dieValue = newState.dice.values[0];
       const firstDoublesUsed = newState.turnMoves.filter(
-        m => m.dieUsed === state.dice.values[0]
+        m => m.dieUsed === dieValue
       ).length;
       
       if (firstDoublesUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
         // Move to complement phase
-        const comp = getComplement(state.dice.values[0]);
+        const comp = getComplement(dieValue);
         newState.remainingMoves = [comp, comp, comp, comp];
         newState.doublesPhase = 'complement';
         newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
@@ -269,7 +270,7 @@ export function executeMove(
         return newState;
       } else {
         // Can't use all 4 first doubles - check if can use complement anyway
-        const comp = getComplement(state.dice.values[0]);
+        const comp = getComplement(dieValue);
         newState.remainingMoves = [comp, comp, comp, comp];
         newState.doublesPhase = 'complement';
         newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
@@ -283,7 +284,7 @@ export function executeMove(
         return newState;
       }
     } else if (newState.doublesPhase === 'complement') {
-      const comp = getComplement(state.dice.values[0]);
+      const comp = getComplement(dieValue);
       const compUsed = newState.turnMoves.filter(m => m.dieUsed === comp).length;
       
       if (compUsed >= 4 || (allInExitCourt(newState, player) && newState.remainingMoves.length === 0)) {
