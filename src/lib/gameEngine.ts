@@ -83,8 +83,9 @@ export function getValidMoves(
   for (const die of uniqueMoves) {
     if (from === 'well' || from === 'pit') {
       // Entering: die value determines the space (1-6, so index 0-5)
+      // Can enter if not blocked (2+ opponents) OR can hit a blot (1 opponent)
       const destIndex = die - 1;
-      if (destIndex >= 0 && destIndex < 6 && !isBlocked(state, destIndex, player)) {
+      if (destIndex >= 0 && destIndex < 6 && (!isBlocked(state, destIndex, player) || wouldHit(state, destIndex, player))) {
         if (!validDestinations.includes(destIndex)) {
           validDestinations.push(destIndex);
         }
@@ -94,8 +95,11 @@ export function getValidMoves(
       const destIndex = from + die;
       
       if (destIndex < TOTAL_SPACES) {
-        // Normal move on board
-        if (!isBlocked(state, destIndex, player)) {
+        // Normal move on board - can move if:
+        // - Empty or own piece
+        // - Can hit a blot (1 opponent piece)
+        // - Cannot land on blocked space (2+ opponent pieces)
+        if (!isBlocked(state, destIndex, player) || wouldHit(state, destIndex, player)) {
           if (!validDestinations.includes(destIndex)) {
             validDestinations.push(destIndex);
           }
