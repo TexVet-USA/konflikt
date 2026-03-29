@@ -14,7 +14,7 @@ import {
 } from './gameEngine';
 import { getAIMove, AIDifficulty } from './aiEngine';
 
-export type GameMode = 'pvp' | 'pvc';
+export type GameMode = 'pvp' | 'pvc' | 'sandbox';
 
 type GameAction =
   | { type: 'NEW_GAME' }
@@ -25,7 +25,11 @@ type GameAction =
   | { type: 'DESELECT' }
   | { type: 'SET_STATE'; state: GameState }
   | { type: 'AI_MOVE'; from: number | 'well' | 'pit'; to: number | 'off'; dieUsed: number }
-  | { type: 'PASS_TURN' };
+  | { type: 'PASS_TURN' }
+  | { type: 'SANDBOX_ADD_PIECE'; space: number | 'well' | 'pit'; player: Player }
+  | { type: 'SANDBOX_REMOVE_PIECE'; space: number | 'well' | 'pit'; player: Player }
+  | { type: 'SANDBOX_SET_DICE'; dice: [number, number] }
+  | { type: 'SANDBOX_SET_PHASE'; phase: string };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -135,6 +139,47 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'SET_STATE':
       return action.state;
+
+    // Sandbox mode handlers
+    case 'SANDBOX_ADD_PIECE': {
+      const { space, player } = action;
+      const newState = { ...state };
+      if (space === 'well') {
+        newState.well[player]++;
+      } else if (space === 'pit') {
+        newState.pit[player]++;
+      } else {
+        newState.board[space][player]++;
+      }
+      return newState;
+    }
+
+    case 'SANDBOX_REMOVE_PIECE': {
+      const { space, player } = action;
+      const newState = { ...state };
+      if (space === 'well' && newState.well[player] > 0) {
+        newState.well[player]--;
+      } else if (space === 'pit' && newState.pit[player] > 0) {
+        newState.pit[player]--;
+      } else if (typeof space === 'number' && newState.board[space][player] > 0) {
+        newState.board[space][player]--;
+      }
+      return newState;
+    }
+
+    case 'SANDBOX_SET_DICE': {
+      const { dice } = action;
+      return {
+        ...state,
+        dice: { values: dice, rolled: true },
+        phase: 'moving',
+        remainingMoves: dice[0] === dice[1] ? [dice[0], dice[0], dice[0], dice[0]] : [...dice],
+      };
+    }
+
+    case 'SANDBOX_SET_PHASE': {
+      return { ...state, phase: action.phase as any };
+    }
 
     default:
       return state;

@@ -5,12 +5,13 @@ import PlayerPanel from './PlayerPanel';
 import GameHeader from './GameHeader';
 import RulesModal from './RulesModal';
 import WinnerModal from './WinnerModal';
+import SandboxControls from './SandboxControls';
 import { useGame } from '@/lib/GameContext';
 import { PLAYER_COLORS } from '@/lib/gameTypes';
 
 const GameView: React.FC = () => {
   const [rulesOpen, setRulesOpen] = useState(false);
-  const { state } = useGame();
+  const { state, gameMode } = useGame();
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
@@ -120,6 +121,7 @@ const GameView: React.FC = () => {
 
       <RulesModal isOpen={rulesOpen} onClose={() => setRulesOpen(false)} />
       <WinnerModal />
+      {gameMode === 'sandbox' && <SandboxControls />}
     </div>
   );
 };
