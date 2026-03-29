@@ -24,7 +24,8 @@ type GameAction =
   | { type: 'MOVE_TO'; destination: number | 'off' }
   | { type: 'DESELECT' }
   | { type: 'SET_STATE'; state: GameState }
-  | { type: 'AI_MOVE'; from: number | 'well' | 'pit'; to: number | 'off'; dieUsed: number };
+  | { type: 'AI_MOVE'; from: number | 'well' | 'pit'; to: number | 'off'; dieUsed: number }
+  | { type: 'PASS_TURN' };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -113,6 +114,22 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return executeMove(state, from, to, dieUsed);
     }
 
+    case 'PASS_TURN': {
+      // Auto-pass turn when no valid moves available
+      const opponent: Player = state.currentPlayer === 'white' ? 'black' : 'white';
+      return {
+        ...state,
+        currentPlayer: opponent,
+        phase: 'rolling',
+        remainingMoves: [],
+        turnMoves: [],
+        doublesPhase: null,
+        selectedSpace: null,
+        validMoves: [],
+        message: `No valid moves! Turn passes to ${opponent === 'white' ? 'White' : 'Blue'}. Roll the dice!`
+      };
+    }
+
     case 'DESELECT':
       return { ...state, selectedSpace: null, validMoves: [] };
 
@@ -195,6 +212,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const move = getAIMove(state, aiDifficulty);
         if (move) {
           dispatch({ type: 'AI_MOVE', from: move.from, to: move.to, dieUsed: move.dieUsed });
+        } else {
+          // AI has no valid moves - auto-pass turn
+          dispatch({ type: 'PASS_TURN' });
         }
         setAiThinking(false);
       }, delay);
