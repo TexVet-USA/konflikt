@@ -85,6 +85,14 @@ const CircularBoard: React.FC = () => {
       <circle cx={CX} cy={CY} r={OUTER_R + 8} fill="none" stroke="#1E293B" strokeWidth="1" opacity="0.6" />
       <circle cx={CX} cy={CY} r={OUTER_R} fill="none" stroke="#334155" strokeWidth="1.5" />
 
+      {/* START/END boundary labels */}
+      <text x={CX + 8} y={CY - OUTER_R + 20} textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold" opacity="0.8">
+        START
+      </text>
+      <text x={CX - 8} y={CY - OUTER_R + 20} textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold" opacity="0.8">
+        END
+      </text>
+
       {/* Zone labels */}
       <text x={CX} y={CY + OUTER_R + 26} textAnchor="middle" fill="#60A5FA" fontSize="18" fontWeight="bold" letterSpacing="2">
         ON
