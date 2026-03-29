@@ -111,7 +111,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li>ALL pieces must be in exit court (spaces 19-24) first</li>
               <li>Must roll the <strong className="text-white">exact number</strong> matching the space position</li>
-              <li>Space 19 = need a 1, Space 20 = need a 2, ... Space 24 = need a 6</li>
+              <li>Space 19 = need a 6, Space 20 = need a 5, Space 21 = need a 4, Space 22 = need a 3, Space 23 = need a 2, Space 24 = need a 1</li>
               <li>Can use multiple moves to reach a lower space then bear off</li>
               <li>Example: piece on space 24 (position 6) can bear off with double 3s (move to position 3, then off)</li>
             </ul>

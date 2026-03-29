@@ -64,6 +64,21 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const valid = getValidMoves(state, from, player, state.remainingMoves);
       
       if (valid.length === 0) {
+        // Check if player has ANY valid move - if not, auto-pass turn
+        if (!hasAnyValidMove(state, player, state.remainingMoves)) {
+          const opponent: Player = player === 'white' ? 'black' : 'white';
+          return {
+            ...state,
+            selectedSpace: null,
+            validMoves: [],
+            currentPlayer: opponent,
+            phase: 'rolling',
+            remainingMoves: [],
+            turnMoves: [],
+            doublesPhase: null,
+            message: `No valid moves! Turn passes to ${opponent === 'white' ? 'White' : 'Blue'}. Roll the dice!`
+          };
+        }
         return { ...state, selectedSpace: null, validMoves: [], message: 'No valid moves from this position.' };
       }
 

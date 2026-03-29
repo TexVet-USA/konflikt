@@ -51,7 +51,7 @@ const HeroSection: React.FC = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-purple-300 font-light mb-2">
-          Russian Backgammon on a Round Board
+          a variation of Russian Backgammon
         </p>
 
         <p className="text-lg text-slate-400 mb-10 max-w-xl mx-auto">

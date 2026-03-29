@@ -157,6 +157,9 @@ export function hasAnyValidMove(state: GameState, player: Player, moves: number[
   return false;
 }
 
+// Alias for hasAnyValidMove - easier to remember
+export const canPlayerMove = hasAnyValidMove;
+
 // Execute a move and return the new state
 export function executeMove(
   state: GameState,

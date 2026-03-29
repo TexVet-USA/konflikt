@@ -114,7 +114,7 @@ const GameView: React.FC = () => {
       {/* Footer */}
       <footer className="border-t border-slate-800/50 bg-slate-950 py-3 px-4 text-center">
         <p className="text-xs text-slate-600">
-          Konflikt — Russian Backgammon on a Round Board • "Ya Neva' Give Up!"
+          Konflikt — a variation of Russian Backgammon • "Ya Neva' Give Up!"
         </p>
       </footer>
 
