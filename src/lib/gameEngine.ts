@@ -268,10 +268,18 @@ export function executeMove(
         }
         return newState;
       } else {
-        // Couldn't use all first doubles - lose everything
-        newState.remainingMoves = [];
-        newState.doublesPhase = null;
-        endTurn(newState);
+        // Can't use all 4 first doubles - check if can use complement anyway
+        const comp = getComplement(state.dice.values[0]);
+        newState.remainingMoves = [comp, comp, comp, comp];
+        newState.doublesPhase = 'complement';
+        newState.message = `Doubles! Now move 4 × ${comp} (complement).`;
+        
+        if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
+          // Can't use complement, lose re-roll
+          newState.remainingMoves = [];
+          newState.doublesPhase = null;
+          endTurn(newState);
+        }
         return newState;
       }
     } else if (newState.doublesPhase === 'complement') {
