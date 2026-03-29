@@ -234,6 +234,14 @@ export function executeMove(
 
   // Check if more moves available
   if (newState.remainingMoves.length === 0 || !hasAnyValidMove(newState, player, newState.remainingMoves)) {
+    // CRITICAL: No valid moves with remaining dice - auto-pass turn
+    if (!hasAnyValidMove(newState, player, newState.remainingMoves)) {
+      newState.remainingMoves = [];
+      newState.doublesPhase = null;
+      endTurn(newState);
+      return newState;
+    }
+    
     // Handle doubles phases
     if (newState.doublesPhase === 'first' && isDoubles(state.dice.values)) {
       // Check if all 4 first doubles were used
