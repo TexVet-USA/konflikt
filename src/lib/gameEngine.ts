@@ -424,38 +424,3 @@ export function countValidMoves(state: GameState, player: Player, moves: number[
   }
   return count;
 }
-
-
-export function canPlayerMove(state: GameState, player: Player): boolean {
-  // Check if player can make ANY move with ANY die
-  const diceValues = [1,2,3,4,5,6];
-  
-  // Check from pit
-  if (state.pit[player] > 0) {
-    for (const die of diceValues) {
-      const moves = getValidMoves(state, "pit", player, [die]);
-      if (moves.length > 0) return true;
-    }
-  }
-  
-  // Check from well  
-  if (state.well[player] > 0) {
-    for (const die of diceValues) {
-      const moves = getValidMoves(state, "well", player, [die]);
-      if (moves.length > 0) return true;
-    }
-  }
-  
-  // Check from each board position
-  for (let i = 0; i < TOTAL_SPACES; i++) {
-    if (state.board[i][player] > 0) {
-      for (const die of diceValues) {
-        const moves = getValidMoves(state, i, player, [die]);
-        if (moves.length > 0) return true;
-      }
-    }
-  }
-  
-  return false;
-}
-
