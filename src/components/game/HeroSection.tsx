@@ -94,20 +94,6 @@ const HeroSection: React.FC = () => {
               </svg>
               vs Computer
             </button>
-            <button
-              onClick={() => setSelectedMode('sandbox')}
-              className={`flex-1 py-3 px-4 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
-                selectedMode === 'sandbox'
-                  ? 'bg-purple-600 text-white shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-              }`}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 20h9" />
-                <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
-              </svg>
-              Sandbox
-            </button>
           </div>
         </div>
 
