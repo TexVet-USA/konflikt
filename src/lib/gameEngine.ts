@@ -325,16 +325,18 @@ export function processDiceRoll(state: GameState, dice: [number, number]): GameS
       newState.doublesPhase = 'first';
       newState.message = `Doubles ${dieValue}s in end zone! Move as many as possible.`;
     } else {
-      // Outside bearing-off zone: must be able to use ALL 4 doubles
-      if (possibleMoves >= 4) {
+      // Allow any valid moves - don't require all 4 upfront
+      // The "use it or lose it" check happens after moves
+      const anyMoves = countValidMoves(newState, newState.currentPlayer, [dieValue]);
+      if (anyMoves > 0) {
         newState.remainingMoves = [dieValue, dieValue, dieValue, dieValue];
         newState.doublesPhase = 'first';
-        newState.message = `Doubles ${dieValue}s! Move 4 × ${dieValue}, then 4 × ${getComplement(dieValue)}, then roll again!`;
+        newState.message = `Doubles ${dieValue}s! Move them while you can!`;
       } else {
-        // Can't use all 4 - turn ends immediately
+        // No valid moves at all - turn ends
         newState.remainingMoves = [];
         newState.doublesPhase = null;
-        newState.message = `Can't make all 4 doubles ${dieValue}s! Turn passes.`;
+        newState.message = `No valid moves with ${dieValue}s! Turn passes.`;
         endTurn(newState);
         newState.phase = 'rolling';
         return newState;
