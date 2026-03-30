@@ -29,7 +29,8 @@ type GameAction =
   | { type: 'SANDBOX_ADD_PIECE'; space: number | 'well' | 'pit'; player: Player }
   | { type: 'SANDBOX_REMOVE_PIECE'; space: number | 'well' | 'pit'; player: Player }
   | { type: 'SANDBOX_SET_DICE'; dice: [number, number] }
-  | { type: 'SANDBOX_SET_PHASE'; phase: string };
+  | { type: 'SANDBOX_SET_PHASE'; phase: string }
+  | { type: 'SANDBOX_SET_CURRENT_PLAYER'; player: Player };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -179,6 +180,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'SANDBOX_SET_PHASE': {
       return { ...state, phase: action.phase as any };
+    }
+
+    case 'SANDBOX_SET_CURRENT_PLAYER': {
+      return { ...state, currentPlayer: action.player };
     }
 
     default:

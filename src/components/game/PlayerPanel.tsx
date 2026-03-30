@@ -7,7 +7,7 @@ interface PlayerPanelProps {
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({ player }) => {
-  const { state, selectSpace, gameMode, aiDifficulty } = useGame();
+  const { state, selectSpace, gameMode, aiDifficulty, dispatch } = useGame();
   const colors = PLAYER_COLORS[player];
   const isActive = state.currentPlayer === player && state.phase === 'moving';
   const wellCount = state.well[player];
@@ -17,6 +17,16 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({ player }) => {
   const isAI = gameMode === 'pvc' && player === 'black';
 
   const handleWellClick = () => {
+    // Sandbox mode: toggle pieces in well
+    if (gameMode === 'sandbox') {
+      if (wellCount > 0) {
+        dispatch({ type: 'SANDBOX_REMOVE_PIECE', space: 'well', player } as any);
+      } else {
+        dispatch({ type: 'SANDBOX_ADD_PIECE', space: 'well', player } as any);
+      }
+      return;
+    }
+    // Normal mode
     if (isActive && wellCount > 0 && !isAI) {
       selectSpace('well');
     }
