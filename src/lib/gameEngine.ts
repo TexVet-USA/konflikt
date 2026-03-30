@@ -120,7 +120,7 @@ export function getValidMoves(
         if (die < pos) {
           const newPos = pos - die;
           if (newPos >= 1) {
-            const newSpaceIndex = newPos + 17;
+          const newSpaceIndex = 25 - newPos; // Correct mapping from exit position (1-6) to space index (24-19)
             // Can move down if not blocked (2+) OR can hit a blot (1)
             if (!isBlocked(state, newSpaceIndex, player) || wouldHit(state, newSpaceIndex, player)) {
               if (!validDestinations.includes(newSpaceIndex)) {
