@@ -121,7 +121,8 @@ export function getValidMoves(
           const newPos = pos - die;
           if (newPos >= 1) {
             const newSpaceIndex = newPos + 17;
-            if (!isBlocked(state, newSpaceIndex, player)) {
+            // Can move down if not blocked (2+) OR can hit a blot (1)
+            if (!isBlocked(state, newSpaceIndex, player) || wouldHit(state, newSpaceIndex, player)) {
               if (!validDestinations.includes(newSpaceIndex)) {
                 validDestinations.push(newSpaceIndex);
               }
