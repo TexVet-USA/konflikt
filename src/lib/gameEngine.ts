@@ -351,10 +351,12 @@ export function processDiceRoll(state: GameState, dice: [number, number]): GameS
 
   // Check if any moves are possible
   if (!hasAnyValidMove(newState, newState.currentPlayer, newState.remainingMoves)) {
+    newState.remainingMoves = [];
+    newState.doublesPhase = null;
     newState.message = `No valid moves available. Turn passes.`;
-    setTimeout(() => {}, 0); // Will handle in UI
     endTurn(newState);
     newState.phase = 'rolling';
+    return newState;
   }
 
   return newState;
