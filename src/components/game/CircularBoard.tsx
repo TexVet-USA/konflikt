@@ -31,7 +31,7 @@ function wedge(cx: number, cy: number, ir: number, or_: number, sDeg: number, eD
 }
 
 const CircularBoard: React.FC = () => {
-  const { state, selectSpace, moveTo, deselect, gameMode, dispatch } = useGame();
+  const { state, selectSpace, moveTo, deselect } = useGame();
   const half = ANGLE_PER_SPACE / 2;
   const player = state.currentPlayer;
 
@@ -129,17 +129,6 @@ const CircularBoard: React.FC = () => {
             strokeWidth={sw}
             className={`transition-colors duration-75 ${(isValid || canSelect) ? 'cursor-pointer' : ''}`}
             onClick={() => {
-              // Sandbox mode: click to add/remove pieces
-              if (gameMode === 'sandbox') {
-                const currentCount = state.board[s.index][player];
-                if (currentCount > 0) {
-                  dispatch({ type: 'SANDBOX_REMOVE_PIECE', space: s.index, player } as any);
-                } else {
-                  dispatch({ type: 'SANDBOX_ADD_PIECE', space: s.index, player } as any);
-                }
-                return;
-              }
-              // Normal game mode
               if (isValid) moveTo(s.index);
               else if (canSelect) selectSpace(s.index);
               else deselect();
