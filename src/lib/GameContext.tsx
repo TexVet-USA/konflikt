@@ -14,7 +14,7 @@ import {
 } from './gameEngine';
 import { getAIMove, AIDifficulty } from './aiEngine';
 
-export type GameMode = 'pvp' | 'pvc';
+export type GameMode = 'pvp' | 'pvc' | 'sandbox';
 
 type GameAction =
   | { type: 'NEW_GAME' }
